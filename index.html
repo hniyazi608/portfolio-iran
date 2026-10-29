@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#12304a">
+<meta name="description" content="مدیریت شخصی پرتفوی بورس ایران">
+<link rel="manifest" href="manifest.json">
+<title>پرتفوی من | بورس ایران</title>
+<style>
+:root{--navy:#12304a;--blue:#176b87;--bg:#f3f6f9;--card:#fff;--text:#172b3a;--muted:#647788;--line:#e1e8ee;--green:#11845b;--red:#c43d4b;--gold:#d89b19}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Tahoma,"Segoe UI",sans-serif;color:var(--text);padding-bottom:84px}
+header{background:linear-gradient(135deg,#12304a,#176b87);color:white;padding:22px 18px 24px;border-radius:0 0 24px 24px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:20px;font-weight:800}.sub{font-size:12px;opacity:.8;margin-top:6px}.tag{font-size:11px;border:1px solid #ffffff55;border-radius:99px;padding:6px 9px}
+main{max-width:850px;margin:auto;padding:14px}.summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:-6px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 4px 15px #16364a08}.metric-label{font-size:12px;color:var(--muted)}.metric{font-size:18px;font-weight:800;margin-top:9px;overflow-wrap:anywhere}.metric.small{font-size:15px}.section-head{display:flex;align-items:center;justify-content:space-between;margin:20px 2px 10px}.section-head h2{font-size:16px;margin:0}.btn{border:0;border-radius:11px;padding:11px 13px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;background:var(--navy);color:white}.btn.secondary{background:#e7f0f5;color:var(--navy)}.btn.danger{background:#fff0f1;color:var(--red)}.btn.full{width:100%}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.table-wrap{overflow-x:auto;background:white;border:1px solid var(--line);border-radius:14px}table{width:100%;border-collapse:collapse;min-width:650px;font-size:12px}th,td{padding:12px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}th{background:#f8fafc;color:var(--muted);font-weight:700}tr:last-child td{border-bottom:0}.positive{color:var(--green)}.negative{color:var(--red)}.empty{padding:22px;text-align:center;color:var(--muted);font-size:13px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}.field input,.field select{width:100%;border:1px solid #d5e0e8;background:white;border-radius:10px;padding:12px;font:inherit;font-size:14px;min-width:0}.field.fullrow{grid-column:1/-1}.notice{background:#fff8e7;color:#775515;border:1px solid #f0dfb2;border-radius:12px;padding:12px;font-size:12px;line-height:1.8;margin-top:14px}.panel{display:none}.panel.active{display:block}.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:5;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 5px calc(8px + env(safe-area-inset-bottom));box-shadow:0 -5px 18px #16364a0b}.nav-btn{border:0;background:none;color:var(--muted);font:inherit;font-size:11px;padding:7px 12px;border-radius:10px;display:flex;flex-direction:column;gap:4px;align-items:center}.nav-btn .ico{font-size:19px}.nav-btn.active{background:#e7f0f5;color:var(--navy);font-weight:800}.chartbox{height:220px;width:100%;display:block}.muted{color:var(--muted);font-size:12px;line-height:1.8}.inline-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.symbol-title{font-weight:800}.pill{background:#edf3f7;color:#36576d;border-radius:99px;padding:4px 7px;font-size:11px}
+@media(min-width:650px){.summary{grid-template-columns:repeat(4,1fr)}main{padding:22px}.metric{font-size:20px}}
+</style>
+</head>
+<body>
+<header><div class="top"><div><div class="brand">پرتفوی من</div><div class="sub">مدیریت سرمایه · بورس و فرابورس ایران</div></div><span class="tag">نسخه آزمایشی</span></div></header>
+<main>
+<section id="dashboard" class="panel active">
+ <div class="summary">
+  <div class="card"><div class="metric-label">ارزش روز دارایی‌ها</div><div class="metric" id="mMarket">۰</div></div>
+  <div class="card"><div class="metric-label">بهای تمام‌شده باقی‌مانده</div><div class="metric" id="mCost">۰</div></div>
+  <div class="card"><div class="metric-label">سود/زیان باز</div><div class="metric small" id="mUnreal">۰</div></div>
+  <div class="card"><div class="metric-label">سود/زیان تحقق‌یافته</div><div class="metric small" id="mReal">۰</div></div>
+ </div>
+ <div class="section-head"><h2>ترکیب پرتفوی بر اساس ارزش روز</h2><span class="pill">قیمت دستی</span></div>
+ <div class="card"><canvas id="chart" class="chartbox"></canvas><div id="chartEmpty" class="empty">برای نمایش نمودار، نماد و قیمت روز وارد کن.</div></div>
+ <div class="section-head"><h2>دارایی‌ها</h2><button class="btn secondary" onclick="go('holdings')">مشاهده همه</button></div>
+ <div id="dashHoldings" class="card"></div>
+ <div class="notice">این نسخه به سامانه معاملات یا منبع قیمت زنده متصل نیست. قیمت روز را خودت وارد کن. اطلاعات در حافظه همین مرورگر ذخیره می‌شود؛ برای جلوگیری از دست‌رفتن داده‌ها، مرتب خروجی پشتیبان بگیر.</div>
+</section>
+<section id="holdings" class="panel">
+ <div class="section-head"><h2>دارایی‌ها و قیمت‌ها</h2><button class="btn" onclick="openModal('priceModal')">＋ نماد / قیمت</button></div>
+ <div class="muted">نماد جدید را اضافه کن و قیمت روز را هر زمان خواستی به‌روزرسانی کن.</div>
+ <div id="holdingsTable" style="margin-top:12px"></div>
+</section>
+<section id="trades" class="panel">
+ <div class="section-head"><h2>معاملات</h2><button class="btn" onclick="openModal('tradeModal')">＋ ثبت معامله</button></div>
+ <div class="toolbar"><button class="btn secondary" onclick="exportCSV()">خروجی CSV</button><button class="btn secondary" onclick="backupJSON()">پشتیبان‌گیری</button><button class="btn secondary" onclick="document.getElementById('importFile').click()">بازیابی پشتیبان</button><input id="importFile" type="file" accept=".json,application/json" hidden onchange="restoreJSON(event)"></div>
+ <div id="tradesTable" style="margin-top:12px"></div>
+</section>
+<section id="more" class="panel">
+ <div class="section-head"><h2>تنظیمات و اطلاعات</h2></div>
+ <div class="card">
+  <div class="field"><label>واحد قیمت و مبالغ</label><select id="unit" onchange="saveUnit()"><option value="تومان">تومان</option><option value="ریال">ریال</option></select></div>
+  <p class="muted">واحد را یک‌بار انتخاب کن و تمام قیمت‌ها، کارمزدها و سود نقدی را با همان واحد وارد کن.</p>
+  <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+  <div class="inline-actions"><button class="btn secondary" onclick="backupJSON()">دانلود نسخه پشتیبان</button><button class="btn danger" onclick="clearAll()">پاک‌کردن همه اطلاعات</button></div>
+  <p class="muted">داده‌ها در همین مرورگر و روی همین دستگاه ذخیره می‌شوند؛ به‌صورت خودکار بین گوشی‌ها همگام‌سازی نمی‌شوند.</p>
+ </div>
+ <div class="notice">نسخه آزمایشی برای مدیریت شخصی است و نباید بدون تطبیق با گزارش کارگزاری، مبنای قطعی محاسبات مالیاتی یا تصمیم معاملاتی قرار گیرد.</div>
+</section>
+</main>
+<nav class="bottom-nav">
+ <button class="nav-btn active" data-tab="dashboard" onclick="go('dashboard')"><span class="ico">▦</span>نمای کلی</button>
+ <button class="nav-btn" data-tab="holdings" onclick="go('holdings')"><span class="ico">◫</span>دارایی‌ها</button>
+ <button class="nav-btn" data-tab="trades" onclick="go('trades')"><span class="ico">⇄</span>معاملات</button>
+ <button class="nav-btn" data-tab="more" onclick="go('more')"><span class="ico">⚙</span>بیشتر</button>
+</nav>
+<div id="tradeModal" class="modal-bg" style="display:none;position:fixed;inset:0;background:#0b1e2bcc;z-index:10;overflow:auto;padding:18px">
+ <div class="card" style="max-width:500px;margin:25px auto;padding:18px">
+  <div class="section-head" style="margin-top:0"><h2>ثبت معامله</h2><button class="btn secondary" onclick="closeModal('tradeModal')">بستن</button></div>
+  <form id="tradeForm"><div class="form-grid">
+   <div class="field"><label>تاریخ</label><input type="date" id="tDate" required></div>
+   <div class="field"><label>نماد</label><input id="tSymbol" placeholder="مثلاً فولاد" required></div>
+   <div class="field"><label>نوع معامله</label><select id="tSide"><option>خرید</option><option>فروش</option></select></div>
+   <div class="field"><label>تعداد</label><input type="number" id="tQty" min="0.0001" step="any" required></div>
+   <div class="field"><label>قیمت هر سهم</label><input type="number" id="tPrice" min="0" step="any" required></div>
+   <div class="field"><label>کارمزد کل</label><input type="number" id="tFee" min="0" step="any" value="0"></div>
+   <div class="field fullrow"><label>یادداشت (اختیاری)</label><input id="tNote"></div>
+  </div><button class="btn full" style="margin-top:14px" type="submit">ذخیره معامله</button></form>
+ </div>
+</div>
+<div id="priceModal" class="modal-bg" style="display:none;position:fixed;inset:0;background:#0b1e2bcc;z-index:10;overflow:auto;padding:18px">
+ <div class="card" style="max-width:450px;margin:25px auto;padding:18px">
+  <div class="section-head" style="margin-top:0"><h2>افزودن نماد / قیمت روز</h2><button class="btn secondary" onclick="closeModal('priceModal')">بستن</button></div>
+  <form id="priceForm"><div class="form-grid">
+   <div class="field"><label>نماد</label><input id="pSymbol" required placeholder="مثلاً فملی"></div>
+   <div class="field"><label>قیمت روز</label><input id="pPrice" type="number" min="0" step="any" required></div>
+  </div><button class="btn full" style="margin-top:14px" type="submit">ذخیره قیمت</button></form>
+ </div>
+</div>
+<script>
+const KEY='portfolioIran.v1';
+let state={trades:[],prices:{},unit:'تومان'};
+const fa=n=>new Intl.NumberFormat('fa-IR',{maximumFractionDigits:2}).format(Number(n)||0);
+const money=n=>fa(n)+' '+state.unit;
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||'null');if(x)state={...state,...x};}catch(e){} document.getElementById('unit').value=state.unit||'تومان';}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));render();}
+function symbols(){return [...new Set([...state.trades.map(t=>t.symbol),...Object.keys(state.prices)])].sort();}
+function calc(){
+ return symbols().map(symbol=>{
+  let qty=0,cost=0,realized=0;
+  const ts=state.trades.filter(t=>t.symbol===symbol).sort((a,b)=>a.date.localeCompare(b.date)||a.id-b.id);
+  for(const t of ts){
+   if(t.side==='خرید'){qty+=t.qty;cost+=t.qty*t.price+t.fee;}
+   else {if(qty<=0)continue;const q=Math.min(t.qty,qty),avg=cost/qty;realized+=q*t.price-t.fee*(q/t.qty)-avg*q;qty-=q;cost-=avg*q;if(qty<1e-8){qty=0;cost=0;}}
+  }
+  const price=Number(state.prices[symbol]?.price||0),market=qty*price,unreal=market-cost;
+  return {symbol,qty,cost,avg:qty?cost/qty:0,price,market,unreal,realized,total:unreal+realized,updated:state.prices[symbol]?.updated||''};
+ });
+}
+function go(id){document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.nav-btn').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));}
+function openModal(id){document.getElementById(id).style.display='block';}
+function closeModal(id){document.getElementById(id).style.display='none';}
+function table(headers,rows){if(!rows.length)return '<div class="card empty">هنوز اطلاعاتی ثبت نشده است.</div>';return '<div class="table-wrap"><table><thead><tr>'+headers.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>'+rows.join('')+'</tbody></table></div>';}
+function render(){
+ const hs=calc(),market=hs.reduce((a,h)=>a+h.market,0),cost=hs.reduce((a,h)=>a+h.cost,0),unreal=hs.reduce((a,h)=>a+h.unreal,0),real=hs.reduce((a,h)=>a+h.realized,0);
+ document.getElementById('mMarket').textContent=money(market);document.getElementById('mCost').textContent=money(cost);
+ document.getElementById('mUnreal').textContent=money(unreal);document.getElementById('mReal').textContent=money(real);
+ const hrows=hs.map(h=>`<tr><td><b>${esc(h.symbol)}</b></td><td>${fa(h.qty)}</td><td>${money(h.avg)}</td><td>${money(h.price)}</td><td>${money(h.market)}</td><td class="${h.unreal>=0?'positive':'negative'}">${money(h.unreal)}</td><td>${money(h.realized)}</td><td><button class="btn secondary" onclick="editPrice('${esc(h.symbol)}')">قیمت</button></td></tr>`);
+ document.getElementById('holdingsTable').innerHTML=table(['نماد','تعداد','میانگین خرید','قیمت روز','ارزش روز','سود/زیان باز','تحقق‌یافته','اقدام'],hrows);
+ document.getElementById('dashHoldings').innerHTML=hs.length?hs.slice(0,5).map(h=>`<div style="display:flex;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid var(--line)"><div><b>${esc(h.symbol)}</b><div class="muted">${fa(h.qty)} سهم · قیمت ${money(h.price)}</div></div><div style="text-align:left"><b>${money(h.market)}</b><div class="${h.unreal>=0?'positive':'negative'}" style="font-size:12px">${money(h.unreal)}</div></div></div>`).join(''):'<div class="empty">هنوز نمادی ثبت نشده است.</div>';
+ const ts=[...state.trades].sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);
+ document.getElementById('tradesTable').innerHTML=table(['تاریخ','نماد','نوع','تعداد','قیمت','کارمزد','یادداشت',''],ts.map(t=>`<tr><td>${esc(t.date)}</td><td><b>${esc(t.symbol)}</b></td><td>${t.side}</td><td>${fa(t.qty)}</td><td>${money(t.price)}</td><td>${money(t.fee)}</td><td>${esc(t.note)}</td><td><button class="btn danger" onclick="delTrade(${t.id})">حذف</button></td></tr>`));
+ drawChart(hs.filter(h=>h.market>0));
+}
+function drawChart(hs){
+ const canvas=document.getElementById('chart'),empty=document.getElementById('chartEmpty'),ctx=canvas.getContext('2d');
+ const dpr=window.devicePixelRatio||1,rect=canvas.getBoundingClientRect();canvas.width=rect.width*dpr;canvas.height=rect.height*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,rect.width,rect.height);
+ if(!hs.length){empty.style.display='block';return;}empty.style.display='none';
+ const total=hs.reduce((s,h)=>s+h.market,0),colors=['#176b87','#11845b','#d89b19','#7256a8','#c43d4b','#5296d5','#79964a','#d77b38'];
+ let start=-Math.PI/2;const cx=rect.width/2,cy=105,r=Math.min(78,rect.width*.22);
+ hs.forEach((h,i)=>{const end=start+h.market/total*Math.PI*2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,start,end);ctx.closePath();ctx.fillStyle=colors[i%colors.length];ctx.fill();start=end;});
+ const list=hs.slice(0,5);let y=16;
+ list.forEach((h,i)=>{ctx.fillStyle=colors[i%colors.length];ctx.fillRect(12,y-9,9,9);ctx.fillStyle='#172b3a';ctx.font='12px Tahoma';ctx.textAlign='right';ctx.fillText(`${h.symbol} · ${fa(total?h.market/total*100:0)}٪`,rect.width-12,y);y+=25;});
+}
+function editPrice(symbol){document.getElementById('pSymbol').value=symbol;document.getElementById('pPrice').value=state.prices[symbol]?.price||0;openModal('priceModal');}
+function delTrade(id){if(!confirm('این معامله حذف شود؟'))return;state.trades=state.trades.filter(t=>t.id!==id);save();}
+document.getElementById('tradeForm').addEventListener('submit',e=>{
+ e.preventDefault();const symbol=document.getElementById('tSymbol').value.trim().toUpperCase(),side=document.getElementById('tSide').value,qty=Number(document.getElementById('tQty').value),price=Number(document.getElementById('tPrice').value),fee=Number(document.getElementById('tFee').value||0),date=document.getElementById('tDate').value;
+ if(!symbol||qty<=0||price<0)return;
+ if(side==='فروش'){const h=calc().find(x=>x.symbol===symbol);if(!h||qty>h.qty+1e-8){alert('تعداد فروش از موجودی ثبت‌شده بیشتر است.');return;}}
+ state.trades.push({id:Date.now(),date,symbol,side,qty,price,fee,note:document.getElementById('tNote').value.trim()});
+ if(!state.prices[symbol])state.prices[symbol]={price,updated:date};save();e.target.reset();document.getElementById('tDate').value=new Date().toISOString().slice(0,10);document.getElementById('tFee').value=0;closeModal('tradeModal');
+});
+document.getElementById('priceForm').addEventListener('submit',e=>{
+ e.preventDefault();const symbol=document.getElementById('pSymbol').value.trim().toUpperCase(),price=Number(document.getElementById('pPrice').value);if(!symbol||price<0)return;
+ state.prices[symbol]={price,updated:new Date().toLocaleString('fa-IR')};save();e.target.reset();closeModal('priceModal');
+});
+function saveUnit(){state.unit=document.getElementById('unit').value;save();}
+function backupJSON(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='portfolio-iran-backup.json';a.click();URL.revokeObjectURL(a.href);}
+function restoreJSON(e){const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!Array.isArray(x.trades)||!x.prices)throw Error();if(confirm('اطلاعات فعلی با نسخه پشتیبان جایگزین شود؟')){state=x;save();}}catch(err){alert('فایل پشتیبان معتبر نیست.')}e.target.value='';};r.readAsText(file);}
+function exportCSV(){const rows=[['تاریخ','نماد','نوع','تعداد','قیمت','کارمزد','یادداشت'],...state.trades.map(t=>[t.date,t.symbol,t.side,t.qty,t.price,t.fee,t.note])];const csv='\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='portfolio-trades.csv';a.click();URL.revokeObjectURL(a.href);}
+function clearAll(){if(confirm('همه معاملات و قیمت‌ها پاک شوند؟ این کار برگشت‌پذیر نیست. ابتدا پشتیبان بگیر.')){state={trades:[],prices:{},unit:state.unit};save();}}
+window.addEventListener('resize',()=>render());
+document.getElementById('tDate').value=new Date().toISOString().slice(0,10);
+load();render();
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body>
+</html>
