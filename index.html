@@ -13,6 +13,98 @@
 header{background:linear-gradient(135deg,#12304a,#176b87);color:white;padding:22px 18px 24px;border-radius:0 0 24px 24px}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:20px;font-weight:800}.sub{font-size:12px;opacity:.8;margin-top:6px}.tag{font-size:11px;border:1px solid #ffffff55;border-radius:99px;padding:6px 9px}
 main{max-width:850px;margin:auto;padding:14px}.summary{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:-6px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 4px 15px #16364a08}.metric-label{font-size:12px;color:var(--muted)}.metric{font-size:18px;font-weight:800;margin-top:9px;overflow-wrap:anywhere}.metric.small{font-size:15px}.section-head{display:flex;align-items:center;justify-content:space-between;margin:20px 2px 10px}.section-head h2{font-size:16px;margin:0}.btn{border:0;border-radius:11px;padding:11px 13px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;background:var(--navy);color:white}.btn.secondary{background:#e7f0f5;color:var(--navy)}.btn.danger{background:#fff0f1;color:var(--red)}.btn.full{width:100%}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.table-wrap{overflow-x:auto;background:white;border:1px solid var(--line);border-radius:14px}table{width:100%;border-collapse:collapse;min-width:650px;font-size:12px}th,td{padding:12px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}th{background:#f8fafc;color:var(--muted);font-weight:700}tr:last-child td{border-bottom:0}.positive{color:var(--green)}.negative{color:var(--red)}.empty{padding:22px;text-align:center;color:var(--muted);font-size:13px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}.field input,.field select{width:100%;border:1px solid #d5e0e8;background:white;border-radius:10px;padding:12px;font:inherit;font-size:14px;min-width:0}.field.fullrow{grid-column:1/-1}.notice{background:#fff8e7;color:#775515;border:1px solid #f0dfb2;border-radius:12px;padding:12px;font-size:12px;line-height:1.8;margin-top:14px}.panel{display:none}.panel.active{display:block}.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:5;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 5px calc(8px + env(safe-area-inset-bottom));box-shadow:0 -5px 18px #16364a0b}.nav-btn{border:0;background:none;min-width:0;padding-left:7px;padding-right:7px;color:var(--muted);font:inherit;font-size:11px;padding:7px 12px;border-radius:10px;display:flex;flex-direction:column;gap:4px;align-items:center}.nav-btn .ico{font-size:19px}.nav-btn.active{background:#e7f0f5;color:var(--navy);font-weight:800}.chartbox{height:220px;width:100%;display:block}.muted{color:var(--muted);font-size:12px;line-height:1.8}.inline-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.symbol-title{font-weight:800}.pill{background:#edf3f7;color:#36576d;border-radius:99px;padding:4px 7px;font-size:11px}
+
+/* طراحی جدید داشبورد کلاسیک بورس */
+#dashboard .summary {
+  gap: 12px;
+  margin-top: 12px;
+}
+
+#dashboard .summary .card {
+  border-radius: 17px;
+  padding: 16px 13px;
+  border: 1px solid #e0e7ed;
+  box-shadow: 0 5px 16px #12304a0d;
+  position: relative;
+  overflow: hidden;
+}
+
+#dashboard .summary .card:first-child {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg,#12304a,#176b87);
+  color: white;
+  padding: 23px 18px;
+}
+
+#dashboard .summary .card:first-child .metric-label {
+  color: #dceaf1;
+  font-size: 13px;
+}
+
+#dashboard .summary .card:first-child .metric {
+  font-size: 27px;
+  margin-top: 13px;
+  color: white;
+}
+
+#dashboard .summary .card:nth-child(2) {
+  border-top: 3px solid #176b87;
+}
+
+#dashboard .summary .card:nth-child(3),
+#dashboard .summary .card:nth-child(4) {
+  border-top: 3px solid #11845b;
+}
+
+#dashboard .summary .card:nth-child(5) {
+  border-top: 3px solid #d89b19;
+}
+
+#dashboard .summary .card:nth-child(6) {
+  border-top: 3px solid #12304a;
+}
+
+#dashboard .metric-label {
+  font-weight: 700;
+}
+
+#dashboard .section-head {
+  margin-top: 25px;
+  margin-bottom: 12px;
+}
+
+#dashboard .section-head h2 {
+  font-size: 16px;
+  font-weight: 800;
+  color: #12304a;
+}
+
+#dashboard #dashHoldings {
+  border-radius: 17px;
+  padding: 8px 15px;
+  box-shadow: 0 5px 16px #12304a0a;
+}
+
+#dashboard #dashHoldings > div {
+  padding: 15px 2px !important;
+}
+
+#dashboard .notice {
+  border-radius: 14px;
+  line-height: 2;
+  margin-top: 18px;
+}
+
+#dashboard .card:has(canvas) {
+  border-radius: 18px;
+  padding: 12px;
+}
+
+@media(min-width:650px) {
+  #dashboard .summary .card:first-child {
+    grid-column: span 2;
+  }
+}
 @media(min-width:650px){.summary{grid-template-columns:repeat(4,1fr)}main{padding:22px}.metric{font-size:20px}}
 </style>
 </head>
