@@ -184,7 +184,27 @@ document.getElementById('priceForm').addEventListener('submit',e=>{
  e.preventDefault();const symbol=document.getElementById('pSymbol').value.trim().toUpperCase(),price=Number(document.getElementById('pPrice').value);if(!symbol||price<0)return;
  state.prices[symbol]={price,updated:new Date().toLocaleString('fa-IR')};save();e.target.reset();closeModal('priceModal');
 });
-function saveUnit(){state.unit=document.getElementById('unit').value;save();}
+document.getElementById('corpForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const date=document.getElementById('cDate').value;
+ const symbol=document.getElementById('cSymbol').value.trim().toUpperCase();
+ const type=document.getElementById('cType').value;
+ const qty=Number(document.getElementById('cQty').value);
+ const price=Number(document.getElementById('cPrice').value||0);
+ const note=document.getElementById('cNote').value.trim();
+ const holding=calc().find(h=>h.symbol===symbol && h.qty>0);
+ if(!date||!symbol||!holding||qty<=0||price<0){
+   alert('تاریخ، نماد موجود در دارایی‌ها، تعداد و مبلغ را بررسی کن.');
+   return;
+ }
+ const eventNote=(type==='bonus'?'افزایش سرمایه - سهام جایزه':'افزایش سرمایه - حق‌تقدم استفاده‌شده')+(note?' - '+note:'');
+ state.trades.push({id:Date.now(),date,symbol,side:'خرید',qty,price:type==='bonus'?0:price,fee:0,note:eventNote});
+ save();
+ e.target.reset();
+ document.getElementById('cDate').value=new Date().toISOString().slice(0,10);
+ document.getElementById('cPrice').value=0;
+ closeModal('corpModal');
+});function saveUnit(){state.unit=document.getElementById('unit').value;save();}
 function backupJSON(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='portfolio-iran-backup.json';a.click();URL.revokeObjectURL(a.href);}
 function restoreJSON(e){const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!Array.isArray(x.trades)||!x.prices)throw Error();if(confirm('اطلاعات فعلی با نسخه پشتیبان جایگزین شود؟')){state=x;save();}}catch(err){alert('فایل پشتیبان معتبر نیست.')}e.target.value='';};r.readAsText(file);}
 function exportCSV(){const rows=[['تاریخ','نماد','نوع','تعداد','قیمت','کارمزد','یادداشت'],...state.trades.map(t=>[t.date,t.symbol,t.side,t.qty,t.price,t.fee,t.note])];const csv='\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='portfolio-trades.csv';a.click();URL.revokeObjectURL(a.href);}
