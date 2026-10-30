@@ -35,7 +35,7 @@ main{max-width:850px;margin:auto;padding:14px}.summary{display:grid;grid-templat
  <div class="notice">این نسخه به سامانه معاملات یا منبع قیمت زنده متصل نیست. قیمت روز را خودت وارد کن. اطلاعات در حافظه همین مرورگر ذخیره می‌شود؛ برای جلوگیری از دست‌رفتن داده‌ها، مرتب خروجی پشتیبان بگیر.</div>
 </section>
 <section id="holdings" class="panel">
- <div class="section-head"><h2>دارایی‌ها و قیمت‌ها</h2><button class="btn" onclick="openModal('priceModal')">＋ نماد / قیمت</button></div>
+ <div class="section-head"><h2>دارایی‌ها و قیمت‌ها</h2><div class="toolbar"><button class="btn secondary" onclick="openModal('corpModal')">＋ افزایش سرمایه</button><button class="btn" onclick="openModal('priceModal')">＋ نماد / قیمت</button></div></div>
  <div class="muted">نماد جدید را اضافه کن و قیمت روز را هر زمان خواستی به‌روزرسانی کن.</div>
  <div id="holdingsTable" style="margin-top:12px"></div>
 </section>
@@ -92,6 +92,19 @@ main{max-width:850px;margin:auto;padding:14px}.summary{display:grid;grid-templat
    <div class="field"><label>سود نقدی هر سهم</label><input type="number" id="dPerShare" min="0" step="any" required></div>
    <div class="field fullrow"><label>یادداشت (اختیاری)</label><input id="dNote"></div>
   </div><p class="muted">مبلغ کل = تعداد سهام مشمول × سود نقدی هر سهم</p><button class="btn full" style="margin-top:14px" type="submit">ذخیره سود نقدی</button></form>
+ </div>
+</div>
+<div id="corpModal" class="modal-bg" style="display:none;position:fixed;inset:0;background:#0b1e2bcc;z-index:10;overflow:auto;padding:18px">
+ <div class="card" style="max-width:500px;margin:25px auto;padding:18px">
+  <div class="section-head" style="margin-top:0"><h2>ثبت افزایش سرمایه</h2><button class="btn secondary" onclick="closeModal('corpModal')">بستن</button></div>
+  <form id="corpForm"><div class="form-grid">
+   <div class="field"><label>تاریخ اعمال</label><input type="date" id="cDate" required></div>
+   <div class="field"><label>نماد</label><input id="cSymbol" required placeholder="مثلاً فولاد"></div>
+   <div class="field"><label>نوع رویداد</label><select id="cType"><option value="bonus">سهام جایزه (بدون پرداخت)</option><option value="rights">حق‌تقدم استفاده‌شده / پذیره‌نویسی</option></select></div>
+   <div class="field"><label>تعداد سهام اضافه‌شده</label><input type="number" id="cQty" min="0.0001" step="any" required></div>
+   <div class="field fullrow"><label>مبلغ پرداختی هر سهم (برای سهام جایزه صفر وارد کن)</label><input type="number" id="cPrice" min="0" step="any" value="0" required></div>
+   <div class="field fullrow"><label>یادداشت (اختیاری)</label><input id="cNote"></div>
+  </div><p class="muted">سهام جایزه تعداد را افزایش می‌دهد و بهای تمام‌شده قبلی را بین تعداد جدید سرشکن می‌کند. در حق‌تقدم استفاده‌شده، مبلغ پذیره‌نویسی به بهای تمام‌شده افزوده می‌شود. حق‌تقدم فروش‌رفته در این فرم ثبت نمی‌شود.</p><button class="btn full" style="margin-top:14px" type="submit">ثبت رویداد</button></form>
  </div>
 </div>
 <div id="priceModal" class="modal-bg" style="display:none;position:fixed;inset:0;background:#0b1e2bcc;z-index:10;overflow:auto;padding:18px">
