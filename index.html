@@ -234,7 +234,7 @@ function openModal(id){document.getElementById(id).style.display='block';}
 function closeModal(id){document.getElementById(id).style.display='none';}
 function table(headers,rows){if(!rows.length)return '<div class="card empty">هنوز اطلاعاتی ثبت نشده است.</div>';return '<div class="table-wrap"><table><thead><tr>'+headers.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>'+rows.join('')+'</tbody></table></div>';}
 function render(){
- const hs=calc(),market=hs.reduce((a,h)=>a+h.market,0),cost=hs.reduce((a,h)=>a+h.cost,0),unreal=hs.reduce((a,h)=>a+h.unreal,0),real=hs.reduce((a,h)=>a+h.realized,0),divTotal=(state.dividends||[]).reduce((a,d)=>a+d.qty*d.perShare,0),totalReturn=unreal+real+divTotal;
+ const allHoldings=calc(),hs=allHoldings.filter(h=>h.qty>0),market=hs.reduce((a,h)=>a+h.market,0),cost=hs.reduce((a,h)=>a+h.cost,0),unreal=hs.reduce((a,h)=>a+h.unreal,0),real=hs.reduce((a,h)=>a+h.realized,0),divTotal=(state.dividends||[]).reduce((a,d)=>a+d.qty*d.perShare,0),totalReturn=unreal+real+divTotal;
  document.getElementById('mMarket').textContent=money(market);document.getElementById('mCost').textContent=money(cost);
  document.getElementById('mUnreal').textContent=money(unreal);
 document.getElementById('mUnreal').className='metric small '+(unreal>=0?'positive':'negative');
